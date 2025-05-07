@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DrSetu - Doctor Appointment Booking</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        :root {
+            --primary: #2C3E50;
+            --secondary: #3498DB;
+            --accent: #E74C3C;
+            --light: #ECF0F1;
+            --dark: #2C3E50;
+            --success: #27AE60;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background-color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo i {
+            color: var(--secondary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            text-transform: uppercase;
+            font-size: 1rem;
+            letter-spacing: 1px;
+        }
+
+        .nav-links a:hover {
+            color: var(--secondary);
+        }
+
+        .hero {
+            background: linear-gradient(rgba(44, 62, 80, 0.9), rgba(44, 62, 80, 0.9)), url('https://images.unsplash.com/photo-1576091160550-2173dba999ef');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 8rem 2rem 4rem;
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .specializations {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .section-title h2 {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .spec-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .spec-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .spec-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .spec-card i {
+            font-size: 2rem;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+        }
+
+        .spec-card h3 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .doctors-list {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .doctor-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .doctor-card h3 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .doctor-card p {
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        .doctor-card .phone {
+            color: var(--secondary);
+            font-weight: bold;
+        }
+
+        .timing-info {
+            background-color: var(--light);
+            padding: 1rem;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--secondary);
+        }
+
+        .timing-info h4 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .timing-info p {
+            color: #666;
+            margin: 0.2rem 0;
+        }
+
+        .address-info {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #ddd;
+        }
+
+        .address-info p {
+            color: #666;
+            margin: 0.5rem 0;
+        }
+
+        .address-info i {
+            color: var(--secondary);
+            margin-right: 0.5rem;
+        }
+
+        .appointment-form {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .form-group textarea {
+            height: 100px;
+            resize: vertical;
+        }
+
+        .slot-selection {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .slot-option {
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .slot-option.selected {
+            background-color: var(--secondary);
+            color: white;
+            border-color: var(--secondary);
+        }
+
+        .btn {
+            background-color: var(--secondary);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #2980b9;
+        }
+
+        .logo-img {
+            width: 56px;
+            height: 56px;
+            border-radius: 12px;
+            object-fit: contain;
+            background: #fff;
+            box-shadow: 0 2px 8px rgba(44,62,80,0.08);
+            display: block;
+        }
+
+        .founder-info {
+            text-align: center;
+            margin-top: 1rem;
+            padding: 0.5rem;
+            background: none;
+            border-radius: 0;
+        }
+
+        .founder-info p {
+            color: #888;
+            font-weight: normal;
+            font-size: 0.95rem;
+        }
+
+        .service-remark {
+            text-align: center;
+            color: var(--accent);
+            font-size: 1.1rem;
+            margin: 1.5rem 0 0.5rem 0;
+        }
+
+        .footer {
+            background-color: var(--primary);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            .spec-grid {
+                grid-template-columns: 1fr;
+            }
+            .nav-links {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+                background: white;
+                position: absolute;
+                top: 60px;
+                right: 0;
+                left: 0;
+                width: 100%;
+                padding: 1rem 2rem;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            }
+            .nav-content {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+            .navbar {
+                padding: 0.5rem 1rem;
+            }
+            .logo-text {
+                font-size: 1.5rem;
+            }
+            .hero {
+                padding: 6rem 1rem 2rem;
+                margin-top: 50px;
+            }
+            .section-title h2 {
+                font-size: 1.5rem;
+            }
+            .doctor-card, .spec-card, .appointment-form {
+                padding: 1rem;
+                font-size: 1rem;
+            }
+            .btn {
+                width: 100%;
+                padding: 0.8rem 0;
+                font-size: 1rem;
+            }
+            .footer {
+                padding: 1rem;
+                font-size: 0.95rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <a href="#" class="logo">
+                <span class="logo-text">DrSetu</span>
+            </a>
+            <div class="nav-links">
+                <a href="#home">Home</a>
+                <a href="#doctors">Doctors</a>
+                <a href="#about">About</a>
+                <a href="#contact">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero" id="home">
+        <h1>Book Your Doctor Appointment in Agra</h1>
+        <p>Find and book appointments with the best doctors in Agra</p>
+        <div class="service-remark">Now this service is available in Agra. Upcoming in other cities soon.</div>
+    </section>
+
+    <section class="specializations" id="doctors">
+        <div class="section-title">
+            <h2>Specializations</h2>
+            <p>Choose from our wide range of medical specialties in Agra</p>
+        </div>
+        <div class="spec-grid">
+            <div class="spec-card" onclick="showDoctors('cardiology')">
+                <i class="fas fa-heart"></i>
+                <h3>Cardiology</h3>
+                <p>Heart Care Specialists</p>
+            </div>
+            <div class="spec-card" onclick="showDoctors('neurology')">
+                <i class="fas fa-brain"></i>
+                <h3>Neurology</h3>
+                <p>Brain & Nervous System</p>
+            </div>
+            <div class="spec-card" onclick="showDoctors('pulmonology')">
+                <i class="fas fa-lungs"></i>
+                <h3>Pulmonology</h3>
+                <p>Lung & Respiratory Care</p>
+            </div>
+            <div class="spec-card" onclick="showDoctors('endocrinology')">
+                <i class="fas fa-flask"></i>
+                <h3>Endocrinology</h3>
+                <p>Diabetes & Thyroid Care</p>
+            </div>
+            <div class="spec-card" onclick="showDoctors('pediatrics')">
+                <i class="fas fa-baby"></i>
+                <h3>Pediatrics</h3>
+                <p>Child Healthcare</p>
+            </div>
+            <div class="spec-card" onclick="showDoctors('general')">
+                <i class="fas fa-user-md"></i>
+                <h3>General Medicine</h3>
+                <p>Primary Healthcare</p>
+            </div>
+            <div class="spec-card" onclick="showDoctors('surgery')">
+                <i class="fas fa-procedures"></i>
+                <h3>Surgery</h3>
+                <p>Surgical Procedures</p>
+            </div>
+            <div class="spec-card" onclick="showDoctors('gastroenterology')">
+                <i class="fas fa-stomach"></i>
+                <h3>Gastroenterology</h3>
+                <p>Digestive System Care</p>
+            </div>
+            <div class="spec-card" onclick="showDoctors('orthopedics')">
+                <i class="fas fa-bone"></i>
+                <h3>Orthopedics</h3>
+                <p>Bone & Joint Care</p>
+            </div>
+            <div class="spec-card" onclick="showDoctors('ent')">
+                <i class="fas fa-ear"></i>
+                <h3>ENT</h3>
+                <p>Ear, Nose & Throat</p>
+            </div>
+            <div class="spec-card" onclick="showDoctors('gynecology')">
+                <i class="fas fa-female"></i>
+                <h3>Gynecology</h3>
+                <p>Women's Health</p>
+            </div>
+            <div class="spec-card" onclick="showDoctors('psychology')">
+                <i class="fas fa-brain"></i>
+                <h3>Psychology</h3>
+                <p>Mental Health Care</p>
+            </div>
+            <div class="spec-card" onclick="showDoctors('dermatology')">
+                <i class="fas fa-allergies"></i>
+                <h3>Dermatology</h3>
+                <p>Skin Care</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="doctors-list" id="doctorsList" style="display: none;">
+        <div class="section-title">
+            <h2>Available Doctors</h2>
+            <p>Select a doctor to book your appointment</p>
+        </div>
+        <div class="timing-info">
+            <h4>Clinic Timings</h4>
+            <p>Morning: 10:00 AM - 1:00 PM</p>
+            <p>Evening: 6:00 PM - 8:00 PM</p>
+        </div>
+        <div id="doctorsGrid"></div>
+    </section>
+
+    <section class="appointment-form" id="appointmentForm" style="display: none;">
+        <div class="section-title">
+            <h2>Book Appointment</h2>
+            <p>Fill in your details to schedule an appointment</p>
+        </div>
+        <form id="bookingForm">
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" required>
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="tel" id="phone" required pattern="[0-9]{10}" maxlength="10" placeholder="10-digit mobile number">
+            </div>
+            <div class="form-group">
+                <label for="gender">Gender</label>
+                <select id="gender" required>
+                    <option value="">Select Gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="age">Age</label>
+                <input type="number" id="age" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Description of Symptoms</label>
+                <textarea id="description" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="date">Preferred Date</label>
+                <input type="date" id="date" required min="" max="">
+            </div>
+            <div class="form-group">
+                <label>Preferred Time Slot</label>
+                <div class="slot-selection">
+                    <div class="slot-option" onclick="selectSlot(this, 'morning')">
+                        <h4>Morning Slot</h4>
+                        <p>10:00 AM - 1:00 PM</p>
+                    </div>
+                    <div class="slot-option" onclick="selectSlot(this, 'evening')">
+                        <h4>Evening Slot</h4>
+                        <p>6:00 PM - 8:00 PM</p>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn">Book Appointment</button>
+        </form>
+    </section>
+
+    <footer class="footer" id="about">
+        <div class="founder-info">
+            <p>Founded by Adarsh Agarwal</p>
+        </div>
+        <p>&copy; 2024 DrSetu. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const doctors = {
+            cardiology: [
+                { 
+                    name: "Eshan Heart Centre", 
+                    phone: "063966 91185",
+                    address: "Agra, Uttar Pradesh"
+                }
+            ],
+            neurology: [
+                { 
+                    name: "Dr. Naresh Sharma (Kapishwar Neuro Health Care Pvt Ltd)", 
+                    phone: "082395 44307",
+                    address: "सुल्तान गंज की पुलिया, 77, Saket Mall के पास"
+                },
+                { 
+                    name: "Amarpreet Neuropsychiatry Clinic", 
+                    phone: "094509 02605",
+                    address: "Phase 1, B 44, opposite Gramin bank"
+                }
+            ],
+            pulmonology: [
+                { 
+                    name: "Dr. Nitish Gupta", 
+                    phone: "082384 40002",
+                    address: "523M+F86 Niramaya Care Center, Shamshabad Raja Kherah Marg, opposite Frontline Electricals, near Gol Market"
+                }
+            ],
+            endocrinology: [
+                { 
+                    name: "Prof. (Dr.) Vishnu Agrawal", 
+                    phone: "099270 05959",
+                    address: "12, UGF, Vijay Business World, Advanced Super Speciality Medical Centre, opposite Kargil Petrol Pump"
+                }
+            ],
+            pediatrics: [
+                { 
+                    name: "Dr. Ashvani Yadav", 
+                    phone: "Not Available",
+                    address: "Shop No.B, 280"
+                },
+                { 
+                    name: "Dr. Abhishek Gupta (Children's Hospital)", 
+                    phone: "0562 224 0109",
+                    address: "B281 Phase 1"
+                }
+            ],
+            general: [
+                { 
+                    name: "Dr. Vineet Jain", 
+                    phone: "0562 430 7969",
+                    address: "1, M.G Rd 2"
+                },
+                { 
+                    name: "Dr. Tushar Mittal", 
+                    phone: "082184 78834",
+                    address: "D - 246"
+                },
+                { 
+                    name: "Dr. P. K. Gupta", 
+                    phone: "084452 88626",
+                    address: "Shop No. B, 59"
+                },
+                { 
+                    name: "Dr. (Major) Durgesh Sharma", 
+                    phone: "084452 41721",
+                    address: "Arjun Nagar Road, Kheria Mode Road, Tantpur Rd"
+                },
+                { 
+                    name: "Dr. Varun K Gupta & Dr. Pramod Kumar Gupta", 
+                    phone: "094110 45930",
+                    address: "B-231"
+                }
+            ],
+            surgery: [
+                { 
+                    name: "Dr. Anurag Gupta", 
+                    phone: "070781 84708",
+                    address: "Lifeline Medicare F5, near ROYAL CHAURAHA"
+                },
+                { 
+                    name: "Dr. Shavez Khan (Advance Care Hospital)", 
+                    phone: "084393 77123",
+                    address: "MIG-137"
+                },
+                { 
+                    name: "Dr. Ankur Bansal", 
+                    phone: "084770 88884",
+                    address: "SR Multisuperspeciality Hospital, Lauries Complex, Namner Rd, near Sai Ka Takiya Crossing"
+                }
+            ],
+            gastroenterology: [
+                { 
+                    name: "Dr. Karan R Rawat (Safe Gastro and Surgery Center)", 
+                    phone: "073988 88889",
+                    address: "5, Church Rd"
+                }
+            ],
+            orthopedics: [
+                { 
+                    name: "Dr. Meghal Goyal", 
+                    phone: "073009 68441",
+                    address: "OPD Room 3, Goyal City Hospital, NH19"
+                }
+            ],
+            ent: [
+                { 
+                    name: "Dr. L. K. Gupta", 
+                    phone: "089585 67070",
+                    address: "MEDICARE 25, R P, 51/1, near Madarsa & Paliwal Park"
+                }
+            ],
+            gynecology: [
+                { 
+                    name: "Dr. Anushree Rawat (Gynecologist)", 
+                    phone: "095288 21838",
+                    address: "Church Rd"
+                }
+            ],
+            psychology: [
+                { 
+                    name: "Dr. Sarang Dhar (Psychologist)", 
+                    phone: "092587 97517",
+                    address: "Petrol pump, 25/112, Gandhi Nagar Rd, behind Nehru Nagar"
+                }
+            ],
+            dermatology: [
+                { 
+                    name: "Dr. Vinod Kumar Singh (Dermatologist)", 
+                    phone: "098377 12777",
+                    address: "143, Jaipur House Colony, near Lord Bhairo Mandir"
+                }
+            ]
+        };
+
+        // Set date input min and max (today to 7 days ahead)
+        const dateInput = document.getElementById('date');
+        const today = new Date();
+        const nextWeek = new Date(today);
+        nextWeek.setDate(today.getDate() + 7);
+        dateInput.min = today.toISOString().split('T')[0];
+        dateInput.max = nextWeek.toISOString().split('T')[0];
+
+        function showDoctors(specialization) {
+            const doctorsList = document.getElementById('doctorsList');
+            const doctorsGrid = document.getElementById('doctorsGrid');
+            const appointmentForm = document.getElementById('appointmentForm');
+            
+            doctorsList.style.display = 'block';
+            appointmentForm.style.display = 'none';
+            
+            doctorsGrid.innerHTML = '';
+            
+            doctors[specialization].forEach(doctor => {
+                const doctorCard = document.createElement('div');
+                doctorCard.className = 'doctor-card';
+                doctorCard.innerHTML = `
+                    <h3>${doctor.name}</h3>
+                    <p class="phone">Phone: ${doctor.phone}</p>
+                    <div class="address-info">
+                        <p><i class="fas fa-map-marker-alt"></i>${doctor.address}</p>
+                    </div>
+                    <button class="btn" onclick="showAppointmentForm('${doctor.name}')">Book Appointment</button>
+                `;
+                doctorsGrid.appendChild(doctorCard);
+            });
+            // Auto-scroll to doctor list
+            doctorsList.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function selectSlot(element, slot) {
+            document.querySelectorAll('.slot-option').forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+        }
+
+        function showAppointmentForm(doctorName) {
+            const appointmentForm = document.getElementById('appointmentForm');
+            appointmentForm.style.display = 'block';
+            appointmentForm.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        document.getElementById('bookingForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const selectedSlot = document.querySelector('.slot-option.selected');
+            if (!selectedSlot) {
+                alert('Please select a time slot');
+                return;
+            }
+            alert('Appointment booked successfully! You will receive a confirmation shortly.');
+            this.reset();
+            document.querySelectorAll('.slot-option').forEach(opt => opt.classList.remove('selected'));
+        });
+    </script>
+</body>
+</html>
